@@ -1,13 +1,13 @@
 import React from 'react';
 
 const FeedbackCard = ({ feedback }) => {
-  const { transformedContent, timestamp, isAnonymous, sender } = feedback;
+  const { transformedContent, timestamp } = feedback;
   
   // Format date
   const formatDate = (timestamp) => {
     if (!timestamp) return '';
     
-    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    const date = timestamp instanceof Date ? timestamp : new Date(timestamp);
     return new Intl.DateTimeFormat('ko-KR', {
       year: 'numeric',
       month: 'long',
@@ -21,7 +21,7 @@ const FeedbackCard = ({ feedback }) => {
       <div className="pl-4 pr-4 pt-4">
         <div className="flex justify-between items-center mb-3">
           <h3 className="text-base font-semibold text-gray-800">
-            {isAnonymous ? '익명의 피드백' : `${sender}의 피드백`}
+            익명의 피드백
           </h3>
           <span className="text-sm text-gray-500">
             {formatDate(timestamp)}
@@ -33,7 +33,7 @@ const FeedbackCard = ({ feedback }) => {
         </div>
         
         <div className="text-right pb-3">
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-teal-50 text-teal-600">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-teal-50 text-[#2ABBB6]">
             AI 변환됨
           </span>
         </div>

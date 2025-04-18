@@ -5,8 +5,6 @@ import PageContainer from '../components/layout/PageContainer';
 import FeedbackList from '../components/feedback/FeedbackList';
 import AISummary from '../components/dashboard/AISummary';
 import Button from '../components/common/Button';
-import { getInviteCodeInfo } from '../services/codeService';
-import { getFeedbacksByCode } from '../services/feedbackService';
 
 const DashboardPage = () => {
   const { codeId } = useParams();
@@ -19,22 +17,35 @@ const DashboardPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch code info
-        const codeInfo = await getInviteCodeInfo(codeId);
-        if (!codeInfo) {
-          setError('유효하지 않은 초대 코드입니다.');
-          return;
-        }
+        // 로딩 시뮬레이션
+        await new Promise(resolve => setTimeout(resolve, 800));
         
-        setUserId(codeInfo.userId);
+        // 모의 데이터
+        setUserId("FE_분주");
         
-        // Fetch feedbacks
-        const feedbackList = await getFeedbacksByCode(codeId);
-        setFeedbacks(feedbackList);
+        // 모의 피드백 데이터
+        setFeedbacks([
+          {
+            id: "1",
+            transformedContent: "발표 중에 목소리가 더 크면 좋겠어요. 내용은 명확하고 슬라이드도 잘 구성되어 있었습니다.",
+            timestamp: new Date(),
+          },
+          {
+            id: "2",
+            transformedContent: "코드 리뷰 시간에 다른 크루들의 의견도 더 물어보면 좋겠어요. 당신의 코드 구현 능력은 뛰어납니다.",
+            timestamp: new Date(Date.now() - 86400000), // 1일 전
+          },
+          {
+            id: "3",
+            transformedContent: "페어 프로그래밍 시 의사소통이 명확합니다. 가끔은 페어의 의견을 좀 더 기다려주면 좋을 것 같아요.",
+            timestamp: new Date(Date.now() - 86400000 * 2), // 2일 전
+          }
+        ]);
+        
+        setLoading(false);
       } catch (err) {
         console.error('Error fetching dashboard data:', err);
         setError('데이터를 불러오는 중 오류가 발생했습니다.');
-      } finally {
         setLoading(false);
       }
     };
@@ -48,9 +59,8 @@ const DashboardPage = () => {
   };
   
   const handleCreateNewCode = () => {
-    // Extract user type and nickname from userId (e.g., FE_분주)
-    const [userType, nickname] = userId.split('_');
-    navigate('/', { state: { showCodeGenerator: true, userType, nickname } });
+    navigate('/');
+    // 메인 페이지로 이동하며 코드 생성 모달을 바로 표시할 방법을 찾아볼 수 있음
   };
   
   if (loading) {

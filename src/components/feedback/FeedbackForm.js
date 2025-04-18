@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Button from '../common/Button';
-import Toggle from '../common/Toggle';
 
 // 모킹 AI 변환 함수
 const mockTransformWithAI = async (text) => {
@@ -11,7 +10,6 @@ const mockTransformWithAI = async (text) => {
 const FeedbackForm = ({ onSubmit }) => {
   const [originalContent, setOriginalContent] = useState('');
   const [transformedContent, setTransformedContent] = useState('');
-  const [isAnonymous, setIsAnonymous] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   
   const handleContentChange = (e) => {
@@ -42,7 +40,7 @@ const FeedbackForm = ({ onSubmit }) => {
     onSubmit({
       originalContent,
       transformedContent: transformedContent || originalContent,
-      isAnonymous
+      isAnonymous: true // 항상 익명으로 설정
     });
   };
   
@@ -84,15 +82,7 @@ const FeedbackForm = ({ onSubmit }) => {
         </div>
       )}
       
-      <div className="flex justify-between items-center">
-        <div className="flex items-center">
-          <Toggle
-            checked={isAnonymous}
-            onChange={() => setIsAnonymous(!isAnonymous)}
-          />
-          <span className="ml-2 text-gray-600 text-sm">익명으로 보내기</span>
-        </div>
-        
+      <div className="flex justify-end">
         <Button primary type="submit">피드백 전송</Button>
       </div>
     </form>
